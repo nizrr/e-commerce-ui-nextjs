@@ -4,6 +4,8 @@ import { ShoppingCart } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
+import { Label } from "./ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 const ProductCard = ({ product }: { product: ProductType }) => {
    const [productTypes, setProductTypes] = useState({
@@ -34,8 +36,23 @@ const ProductCard = ({ product }: { product: ProductType }) => {
             <div className="flex gap-4 items-start">
                {/* Sizes */}
                <div className="flex flex-col gap-1">
-                  <span className="text-sm text-gray-500">Size</span>
-                  <select
+                  <Label className="text-sm text-gray-500">Size</Label>
+                  <Select>
+                     <SelectTrigger className="ring ring-gray-300 rounded-md px-2 py-1 cursor-pointer">
+                        <SelectValue placeholder={productTypes.size.toUpperCase()} />
+                     </SelectTrigger>
+                     <SelectContent>
+                        {product.sizes.map(size => (
+                           <SelectItem
+                              key={size}
+                              value={size}
+                              onClick={() => handleProductType({ type: "size", value: size })}>
+                              {size.toUpperCase()}
+                           </SelectItem>
+                        ))}
+                     </SelectContent>
+                  </Select>
+                  {/* <select
                      name="size"
                      id="size"
                      className="ring ring-gray-300 rounded-md px-2 py-1 text-sm cursor-pointer"
@@ -48,7 +65,7 @@ const ProductCard = ({ product }: { product: ProductType }) => {
                            {size.toUpperCase()}
                         </option>
                      ))}
-                  </select>
+                  </select> */}
                </div>
                {/* Colors */}
                <div className="flex flex-col gap-1">
@@ -60,9 +77,9 @@ const ProductCard = ({ product }: { product: ProductType }) => {
                            className="cursor-pointer"
                            onClick={() => handleProductType({ type: "color", value: color })}>
                            <div
-                              className={`size-7 rounded-full outline-2 outline-offset-2 outline-gray-300 ${
+                              className={`size-7 rounded-full ${
                                  color === productTypes.color
-                                    ? "outline-2 outline-offset-2 outline-blue-600!"
+                                    ? "outline-2 outline-offset-2 outline-blue-600"
                                     : ""
                               }`}
                               style={{ backgroundColor: color }}
